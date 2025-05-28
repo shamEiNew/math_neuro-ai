@@ -9,7 +9,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    
+    explanation = ""
+    math_result = {}
     if request.method == "POST":
         query = request.form["query"]
         category = classify_math_query(query, client)

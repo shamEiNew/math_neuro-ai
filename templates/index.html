@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Math Research Assistant</title>
+    <title>Grothendieck</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='letter-g.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -60,9 +61,9 @@
     </style>
 </head>
 <body>
-    <h2>🧠 Math Research Assistant</h2>
+    <h2>Grothendieck: A Math Research Assistant</h2>
     <form method="post">
-        <textarea name="query" rows="4" placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')..."></textarea><br>
+        <textarea name="query" rows="4" placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')...">{{ request.form.get('query', '') }}</textarea><br>
         <input type="submit" value="Analyze">
     </form>
 
@@ -78,8 +79,19 @@
         <h3>🔍 Symbolic Math Validation:</h3>
         <ul>
             {% for key, value in math_result.items() %}
-            <li><strong>{{ key }}:</strong> \( {{ value }} \)</li>
-            {% endfor %}
+    {% if value is iterable and not value is string %}
+        <li><strong>{{ key }}:</strong>
+            <ul>
+                {% for item in value %}
+                    <li>\( {{ item | safe }} \)</li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        <li><strong>{{ key }}:</strong> \( {{ value | safe }} \)</li>
+    {% endif %}
+{% endfor %}
+
         </ul>
     </div>
     {% endif %}

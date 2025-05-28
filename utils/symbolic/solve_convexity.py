@@ -33,23 +33,25 @@ from sympy import Matrix
 
 def analyze_multivariable_convexity(expr_str):
     try:
-        vars = sorted(list({str(sym) for sym in sp.sympify(expr_str).free_symbols}))
-        symbols = sp.symbols(vars)
+        # Extract and sort variable symbols
         expr = sp.sympify(expr_str)
+        vars = sorted(expr.free_symbols, key=lambda s: s.name)
+        symbols = list(vars)
 
+        # Gradient and Hessian computation
         gradient = [sp.diff(expr, var) for var in symbols]
         hessian = Matrix([[sp.diff(g, var) for var in symbols] for g in gradient])
 
-        # Use leading principal minors test for PSD
-        hessian_det = [hessian[:i, :i].det() for i in range(1, len(symbols)+1)]
-        psd_check = all(sp.simplify(det >= 0) for det in hessian_det)
+        # Leading principal minors (symbolic)
+        hessian_dets = [hessian[:i, :i].det() for i in range(1, len(symbols) + 1)]
 
         return {
             "expression": sp.latex(expr),
-            "variables": vars,
+            "variables": [str(v) for v in symbols],
             "gradient": [sp.latex(g) for g in gradient],
             "hessian": sp.latex(hessian),
-            "is_convex": str(psd_check)
+            "leading_principal_minors": [sp.latex(d) for d in hessian_dets],
+            "is_convex_note": "All leading principal minors should be ≥ 0 for convexity (symbolically)."
         }
     except Exception as e:
         return {"error": str(e)}
