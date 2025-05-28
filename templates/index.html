@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math Research Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fb;
+            padding: 40px;
+            max-width: 900px;
+            margin: auto;
+        }
+        textarea {
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007acc;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #005fa3;
+        }
+        .output {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-left: 6px solid #007acc;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 5px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>🧠 Math Research Assistant</h2>
+    <form method="post">
+        <textarea name="query" rows="4" placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')..."></textarea><br>
+        <input type="submit" value="Analyze">
+    </form>
+
+    {% if explanation %}
+    <div class="output">
+        <h3>📘 LLM Explanation:</h3>
+        <p>{{ explanation | safe }}</p>
+    </div>
+    {% endif %}
+
+    {% if math_result %}
+    <div class="output">
+        <h3>🔍 Symbolic Math Validation:</h3>
+        <ul>
+            {% for key, value in math_result.items() %}
+            <li><strong>{{ key }}:</strong> \( {{ value }} \)</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>
