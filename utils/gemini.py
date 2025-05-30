@@ -29,7 +29,8 @@ def extract_expression(query, client):
         "Extract and convert the main mathematical expression or equation from the following query "
         "into valid SymPy syntax using ** for powers. Do not include any explanation, prefix, or formatting:\n\n"
         f"{query}\n\n"
-        "If its a equation. for example,'x^2-4=0' return 'x**2-4=0'"
+        "If its a equation. for example,'x^2-4=0' return 'x**2-4=0'\n"
+        "If its a system of equation, like '2*x + 3*y - 5', 'x - y - 1', then return a string '2*x + 3*y - 5, x - y - 1' separated by comma"
     )
     response = query_llm(prompt, client)
     return response.strip().splitlines()[0].strip()

@@ -1,5 +1,4 @@
-from utils.symbolic.solve_convexity import *
-from utils.symbolic.solve_equation import *
+from utils.symbolic import *
 from sympy import sympify
 
 
@@ -23,5 +22,7 @@ def route_query(query_type, expr_str):
         return route_problem(expr_str)
     elif query_type == "equation":
         return solve_equation(expr_str)
+    elif query_type == 'system':
+        return solve_system_of_equations(expr_str)
     else:
         return {"error": f"Unsupported query type: {query_type}"}
