@@ -88,6 +88,7 @@ Build a **high-accuracy classifier** that identifies the type of symbolic expres
   - integrals: `Integral(sin(x), x)`  
 
 ### ⚠️ Current Status
+- [Juoyter notebook](https://colab.research.google.com/drive/1ONuLHDp8Y93U_RYXAwJANP8-FD4kpxmX#scrollTo=QxKzjEALgUPF)
 - The model is functional but **accuracy is still below expected production level**  
 - The dataset is being expanded  
 - Class imbalance & long expression formatting still cause misclassification  
