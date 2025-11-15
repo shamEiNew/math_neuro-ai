@@ -6,12 +6,16 @@ features:
   - Equation solving
   - System of equations
   - Symbolic validation using SymPy
+  - Derivative & integral computation
   - LLM-based explanation using Gemini
+  - Experimental ML-based symbolic classifier (separate branch: ml-classify)
 roadmap:
   current:
     - Multivariable convexity support
+    - Derivative & integral handling
   next:
     - Solve equations and systems
+    - Improve accuracy of ML classifier
   future:
     - Geometry solver (AlphaGeometry2)
     - Plotting support
@@ -21,38 +25,111 @@ roadmap:
 
 # 🧠 Math Research Assistant
 
-This is a prototype tool that integrates **LLM explanations (Gemini)** with **symbolic reasoning (SymPy)** to solve and validate mathematical problems. It's designed for researchers, students, and developers working with math automation.
+The **Math Research Assistant** is a prototype that integrates:
 
-## ✨ Features
+- **LLM-powered mathematical reasoning** (Google Gemini),
+- **Symbolic algebra** using **SymPy**, and  
+- **Early-stage ML-based classification** of symbolic expressions.
 
-- Symbolic validation for convexity (single and multivariable)
-- LLM-generated explanations with LaTeX rendering
-- Automatic extraction of math expressions
-- Validation of expressions using custom SymPy logic
-- Roadmap-based extensibility
+It is designed as an experimental research platform for building automated mathematical reasoning systems.
 
-## 🚀 Current Capabilities
+> ⚠️ **This project is actively under development.  
+> Many modules — especially the ML classifier — are experimental and may contain bugs.**
 
-- Convexity detection via second-derivative tests and symbolic inequalities
-- Math expression extraction from natural language
-- LaTeX-rendered explanations (MathJax)
-- Custom UI built with Flask
+---
 
-## 📌 Roadmap
+# ✨ Features
 
-### ✅ Current
-- Support for multivariable convex problems
+### ✔ Symbolic Math Engine
+- Convexity analysis (univariate & multivariate)  
+- Derivative analysis (critical points, monotonicity, inflection points)  
+- Integral parsing (indefinite & definite)  
+- Equation solving (linear & non-linear)
+- Systems of equations (classification + solving)
+- SymPy-based validation of user queries  
+- Comprehensive LaTeX rendering via MathJax
 
-### 🔜 Next
-- Equation solving and systems of equations
+### ✔ LLM-Enhanced
+- Gemini-based natural language → SymPy expression translation  
+- Step-by-step explanations  
+- Correction and interpretation of ambiguous mathematical text  
 
-### 💡 Future
-- Geometry solver using AlphaGeometry2
-- Plotting symbolic functions
-- A custom math DSL
-- Model benchmarking using a persistent dataset
+### ✔ UI Layer
+- Clean black-and-white themed Flask web interface  
+- Inline LaTeX rendering  
+- Friendly error reporting  
 
-## 🛠 Setup
+---
+
+# 🔬 Experimental: ML-Based Equation Classification (`ml-classify` branch)
+
+A separate development branch, **`ml-classify`**, contains a new subsystem:
+
+### 🎯 Goal  
+Build a **high-accuracy classifier** that identifies the type of symbolic expression before routing:
+
+- `equation`
+- `system_of_equations`
+- `convexity_problem`
+- `derivative`
+- `integral`
+- `expression`
+- (future) `geometry`, `limits`, `series`, etc.
+
+### 🧩 Model Details
+- Built using **HuggingFace Transformers**
+- Custom dataset of **SymPy-formatted expressions**
+- Trained for:  
+  - linear equations  
+  - nonlinear equations  
+  - multivariable systems  
+  - convexity/optimization expressions  
+  - derivatives: `diff(x**3, x)`  
+  - integrals: `Integral(sin(x), x)`  
+
+### ⚠️ Current Status
+- The model is functional but **accuracy is still below expected production level**  
+- The dataset is being expanded  
+- Class imbalance & long expression formatting still cause misclassification  
+- SymPy string variations are being normalized  
+
+> 🧪 **This classifier is experimental**.  
+> It is not used by the main branch yet and may misclassify complex or nested expressions.
+
+---
+
+# 🚀 Current Capabilities (Main Branch)
+
+- ✔ Robust convexity detection using symbolic derivatives  
+- ✔ Expression extraction from natural language  
+- ✔ Structured symbolic validation  
+- ✔ Derivative + integral support  
+- ✔ Error-resistant pipeline integrating Gemini + SymPy  
+- ✔ Clean mathematical UI with MathJax  
+
+---
+
+# 📌 Roadmap
+
+### 🟢 **Current Work**
+- Improving multivariable convexity analysis  
+- Completing derivative & integral framework  
+- Improving LLM → SymPy extraction prompt stability  
+
+### 🟡 **Next Steps**
+- Fully integrate equation/system solving  
+- Refine ML classifier accuracy (expand dataset, add noise examples)  
+- Introduce fallback architecture (ML → LLM → deterministic)
+
+### 🔵 **Future Enhancements**
+- Geometry solver using **AlphaGeometry2**  
+- Symbolic plotting (2D & 3D)  
+- Custom math DSL for programmatic reasoning  
+- Persistent benchmark dataset for performance tracking  
+
+---
+
+# 🛠 Installation & Setup
 
 ```bash
 pip install -r requirements.txt
