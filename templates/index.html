@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Grothendieck</title>
@@ -11,8 +11,22 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f7f9fb;
             padding: 40px;
-            max-width: 900px;
+            max-width: 1200px;
             margin: auto;
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        .sidebar {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 40px;
+        }
+        .main-content {
+            flex: 1;
+            min-width: 0;
         }
         textarea {
             width: 100%;
@@ -58,42 +72,345 @@
         strong {
             color: #333;
         }
+        .info-bar {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-left: 6px solid #007acc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .info-bar h3 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .features-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        .features-list li {
+            margin-bottom: 12px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            line-height: 1.4;
+        }
+        .features-list li::before {
+            content: "✓";
+            color: #007acc;
+            font-weight: bold;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        .error-message {
+            background: #fff1f0;
+            border: 1px solid #ffa39e;
+            border-left: 6px solid #ff4d4f;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #cf1322;
+        }
     </style>
 </head>
 <body>
-    <h2>Grothendieck: A Math Research A ssistant</h2>
-    <form method="post">
-        <textarea name="query" rows="4" placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')...">{{ request.form.get('query', '') }}</textarea><br>
-        <input type="submit" value="Analyze">
-    </form>
+    <h2>Grothendieck: A Math Research Assistant</h2>
+    <div class="container">
+        <div class="sidebar">
+            <div class="info-bar">
+                <h3>Currently Supported Operations:</h3>
+                <ul class="features-list">
+                    <li>Convexity Analysis (Single & Multivariable Functions)</li>
+                    <li>Equation Solving (Linear & Non-linear)</li>
+                    <li>Systems of Equations</li>
+                    <li>Symbolic Validation with SymPy</li>
+                    <li>Detailed Mathematical Explanations</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <form method="post">
+                <textarea name="query" rows="4" placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')...">{{ request.form.get('query', '') }}</textarea><br>
+                <input type="submit" value="Analyze">
+            </form>
 
-    {% if explanation %}
-    <div class="output">
-        <h3>📘 LLM Explanation:</h3>
-        <p>{{ explanation | safe }}</p>
-    </div>
-    {% endif %}
+            {% if error_message %}
+            <div class="error-message">
+                {{ error_message }}
+            </div>
+            {% endif %}
 
-    {% if math_result %}
-    <div class="output">
-        <h3>🔍 Symbolic Math Validation:</h3>
-        <ul>
-            {% for key, value in math_result.items() %}
-    {% if value is iterable and not value is string %}
-        <li><strong>{{ key }}:</strong>
-            <ul>
-                {% for item in value %}
-                    <li>\( {{ item | safe }} \)</li>
-                {% endfor %}
+            {% if explanation %}
+            <div class="output">
+                <h3>📘 LLM Explanation:</h3>
+                <p>{{ explanation | safe }}</p>
+            </div>
+            {% endif %}
+
+            {% if math_result %}
+            <div class="output">
+                <h3>🔍 Symbolic Math Validation:</h3>
+                <ul>
+                    {% for key, value in math_result.items() %}
+            {% if value is iterable and not value is string %}
+                <li><strong>{{ key }}:</strong>
+                    <ul>
+                        {% for item in value %}
+                            <li>\( {{ item | safe }} \)</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% else %}
+                <li><strong>{{ key }}:</strong> \( {{ value | safe }} \)</li>
+            {% endif %}
+        {% endfor %}
+
             </ul>
-        </li>
-    {% else %}
-        <li><strong>{{ key }}:</strong> \( {{ value | safe }} \)</li>
-    {% endif %}
-{% endfor %}
-
-        </ul>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grothendieck</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='letter-g.png') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* =======================
+           GLOBAL THEME: BLACK & WHITE
+        ======================= */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        textarea {
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #999;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 15px;
+            margin-top: 10px;
+            border-radius: 3px;
+            background-color: #000;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #333;
+        }
+
+        .output, .info-bar {
+            background: #fafafa;
+            border: 1px solid #000;
+            border-left: 6px solid #000;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        h2, h3 {
+            color: #000000;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .features-list li::before {
+            content: "•";
+            margin-right: 8px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #fff;
+            border: 1px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            color: #000;
+        }
+
+        .sub-list {
+            margin-left: 10px;
+            margin-top: 6px;
+            padding-left: 12px;
+            border-left: 2px dashed #ccc;
+        }
+
+        .key-name {
+            color: #222;
+            display: inline-block;
+            min-width: 180px;
+        }
+
+        .value-latex {
+            display: inline-block;
+        }
+
+        /* =======================
+           FOOTER NOTE
+        ======================= */
+        .footer-note {
+            margin-top: 50px;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #444;
+            border-top: 1px solid #000;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    {% macro render_value(value) -%}
+        {% if value is mapping %}
+            <ul class="sub-list">
+            {% for k, v in value.items() %}
+                <li>
+                    <span class="key-name"><strong>{{ k }}:</strong></span>
+                    <span class="value-latex">{{ render_value(v) }}</span>
+                </li>
+            {% endfor %}
+            </ul>
+
+        {% elif value is iterable and value is not string %}
+            <ul class="sub-list">
+            {% for item in value %}
+                <li>{{ render_value(item) }}</li>
+            {% endfor %}
+            </ul>
+
+        {% else %}
+            {% if value is none %}
+                <span class="value-latex">—</span>
+            {% else %}
+                <span class="value-latex">\( {{ value | safe }} \)</span>
+            {% endif %}
+        {% endif %}
+    {%- endmacro %}
+
+    <h2><strong>Grothendieck:</strong> A Math Research Assistant</h2>
+
+    <div class="container">
+
+        <div class="sidebar">
+            <div class="info-bar">
+                <h3><strong>Supported Operations:</strong></h3>
+                <ul class="features-list">
+                    <li>Convexity Analysis</li>
+                    <li>Derivative & Inflection Analysis</li>
+                    <li>Linear / Non-Linear Equations</li>
+                    <li>Systems of Equations</li>
+                    <li>Symbolic Validation (SymPy)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-content">
+
+            <form method="post">
+                <textarea name="query" rows="4"
+                placeholder="Enter your math question or expression (e.g., 'Is f(x) = x^2 convex?')...">{{ request.form.get('query', '') }}</textarea><br>
+                <input type="submit" value="Analyze">
+            </form>
+
+            {% if error_message %}
+            <div class="error-message">
+                {{ error_message }}
+            </div>
+            {% endif %}
+
+            {% if explanation %}
+            <div class="output">
+                <h3>📘 LLM Explanation:</h3>
+                <p>{{ explanation | safe }}</p>
+            </div>
+            {% endif %}
+
+            {% if math_result %}
+            <div class="output">
+                <h3>🔍 Symbolic Math Validation:</h3>
+                <ul>
+                    {% for key, value in math_result.items() %}
+                        <li>
+                            <strong>{{ key }}:</strong>
+                            {{ render_value(value) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <script>
+                if (window.MathJax) {
+                    MathJax.typesetPromise && MathJax.typesetPromise();
+                }
+            </script>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- =======================
+         FOOTER NOTE
+    ======================= -->
+    <div class="footer-note">
+        <strong>Note:</strong> This project is actively under development.  
+        Some features may be incomplete and bugs may occur.  
+        We appreciate your patience while Grothendieck evolves.
+    </div>
+
 </body>
 </html>
+

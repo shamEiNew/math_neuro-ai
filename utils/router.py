@@ -71,7 +71,7 @@ def route_query(query_type, expr_str):
     """
     Routes the symbolic expression to the correct SymPy validator based on query_type.
     """
-    if query_type == "expression":
+    if query_type == "convexity":
         return route_problem(expr_str)
     elif query_type == "equation":
         if is_nonlinear_equation(expr_str):
@@ -85,6 +85,11 @@ def route_query(query_type, expr_str):
             return solve_nonlinear_system(expr_str)
         else:
             return solve_system_of_equations(expr_str)
-        
+    elif query_type == 'derivative':
+        return handle_derivative(expr_str)
+    elif query_type == 'integral':
+        return handle_integral(expr_str)
     else:
         return {"error": f"Unsupported query type: {query_type}"}
+    
+
